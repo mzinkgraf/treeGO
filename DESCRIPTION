@@ -1,0 +1,20 @@
+Package: treeGO
+Type: Package
+Title: GO enrichment analysis for tree species
+Version: 0.99.0
+Author: Matthew Zinkgraf
+Maintainer: Matthew Zinkgraf <mzinkgraf@gmail.com>
+Description: Perform gene ontology (GO) enrichment and plot results 
+  for non-model organisms with user defined GO universe or Arabidopsis 
+  best BLAST hits.
+License: GPL (>=3)
+Encoding: UTF-8
+Depends:
+    R (>= 3.3.0),annotate,
+    GO.db,
+    GSEABase,
+    GOstats,
+Imports:
+    WGCNA
+LazyData: true
+RoxygenNote: 6.0.1
