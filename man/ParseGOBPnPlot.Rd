@@ -5,9 +5,9 @@
 \title{Parse GO results using grep and plot}
 \usage{
 ParseGOBPnPlot(grepList,GOresults, minT=0, Rorder=NULL,
-my_palette=colorRampPalette(c("white", "red"))(n = 8),
-main = "GO Enrichment",
-zlim = c(0,15) )
+             my_palette=colorRampPalette(c("white", "red"))(n = 8),
+             main = "GO Enrichment",
+             zlim = c(0,15) )
 }
 \arguments{
 \item{grepList}{A list object where each value contains a group of search terms sperated by "|". The names and order values will be taken into account when plotting.}
@@ -29,6 +29,25 @@ Returns summary figure and summary table of results used to generate figure
 }
 \description{
 This function creates a summary plot of GO$BP results by parsing GO results using grep and a list of search terms
+}
+\examples{
+#generate some data
+     set1 <- sample(Ptrichocarpa_210_annotation_primary$ATG)[1:2000]
+     set2 <- sample(Ptrichocarpa_210_annotation_primary$ATG)[1:2000]
+
+#calculate GO enrichment for BP
+     GOresults<-list
+     GOresults$set1<-atGOanalysis(set1,ontology="BP)
+     GOresults$set2<-atGOanalysis(set2,ontology="BP)
+
+#create search list
+     grepList<-list()
+     grepList$hormone<-"hormone|gibberelli|brassino|auxin"
+     grepList$peroxisome <- "peroxi"
+     grepList$localization <-"protein localization"
+
+results<-ParseGOBPnPlot(grepList, GOresults)
+
 }
 \author{
 Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
