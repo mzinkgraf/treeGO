@@ -416,6 +416,7 @@ ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
                  main = main,
                  verticalSeparator.x = vlines
   )
-  return(GOtable)
+  #return(GOtable)
+  return(results)
 
 }
