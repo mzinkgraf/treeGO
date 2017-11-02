@@ -47,7 +47,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   ontology = "MF",
                                   pvalueCutoff = pv,
                                   conditional = FALSE,
-                                  testDirection = "over")
+                                  testDirection = testDirection)
 
   Over_MF <- hyperGTest(params_MF)
   output$MF = Over_MF
@@ -62,7 +62,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   ontology = "BP",
                                   pvalueCutoff = pv,
                                   conditional = FALSE,
-                                  testDirection = "over")
+                                  testDirection = testDirection)
 
   Over_BP <- hyperGTest(params_BP)
   output$BP = Over_BP
@@ -77,7 +77,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   ontology = "CC",
                                   pvalueCutoff = pv,
                                   conditional = FALSE,
-                                  testDirection = "over")
+                                  testDirection = testDirection)
 
   Over_CC <- hyperGTest(params_CC)
   output$CC = Over_CC
@@ -140,7 +140,7 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
                                     ontology = "MF",
                                     pvalueCutoff = pv,
                                     conditional = FALSE,
-                                    testDirection = "over")
+                                    testDirection = testDirection)
 
     Over_MF <- hyperGTest(params_MF)
     output$MF = Over_MF
@@ -155,7 +155,7 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
                                     ontology = "BP",
                                     pvalueCutoff = pv,
                                     conditional = FALSE,
-                                    testDirection = "over")
+                                    testDirection = testDirection)
 
     Over_BP <- hyperGTest(params_BP)
     output$BP = Over_BP
@@ -170,7 +170,7 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
                                     ontology = "CC",
                                     pvalueCutoff = pv,
                                     conditional = FALSE,
-                                    testDirection = "over")
+                                    testDirection = testDirection)
 
     Over_CC <- hyperGTest(params_CC)
     output$CC = Over_CC
