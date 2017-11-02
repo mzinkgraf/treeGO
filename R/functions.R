@@ -420,3 +420,289 @@ ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
   return(results)
 
 }
+
+#
+#'Parse GO results using grep and plot
+#'
+#'This function creates a summary plot of GO$BP results by parsing GO results using grep and a list of search terms
+#'
+#' @usage ParseGOMFnPlot(grepList,GOresults, minT=0, Rorder=NULL,
+#'              my_palette=colorRampPalette(c("white", "red"))(n = 8),
+#'              main = "GO Enrichment",
+#'              zlim = c(0,15) )
+#' @param grepList A list object where each value contains a group of search terms sperated by "|". The names and order values will be taken into account when plotting.
+#' @param GOresults A list containing multiple GO$MF objects from GOanalysis
+#' @param minT An integer specifying the minimum number of time a term must occur to be considered important. Default = 0
+#' @param Rorder Row order for how the results shoul dbe plotted
+#' @param mypalette Color palette used for heatmap
+#' @param main Title of the plot
+#' @param zlim Range specifying the p-values to be plotted
+#' @import annotate
+#' @import AnnotationDbi
+#' @import GO.db
+#' @import GSEABase
+#' @import GOstat
+#' @import WGCNA
+#' @importMethodsFrom GOstats summary
+#' @importMethodsFrom AnnotationDbi Term
+#' @return Returns summary figure and summary table of results used to generate figure
+#' @examples
+#' #generate some data
+#'      set1 <- sample(Ptrichocarpa_210_annotation_primary$ATG)[1:2000]
+#'      set2 <- sample(Ptrichocarpa_210_annotation_primary$ATG)[1:2000]
+#'
+#' #calculate GO enrichment for MF
+#'      GOresults<-list
+#'      GOresults$set1<-atGOanalysis(set1,ontology="MF)
+#'      GOresults$set2<-atGOanalysis(set2,ontology="MF)
+#'
+#' #create search list
+#'      grepList<-list()
+#'      grepList$hormone<-"hormone|gibberelli|brassino|auxin"
+#'      grepList$peroxisome <- "peroxi"
+#'      grepList$localization <-"protein localization"
+#'
+#' results<-ParseGOMFnPlot(grepList, GOresults)
+#'
+#' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
+#' @export
+ParseGOMFnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
+                         my_palette=colorRampPalette(c("white", "red"))(n = 8),
+                         main = "GO Enrichment",
+                         zlim = c(0,15) )
+{
+
+  #check to make sure each GOresults has MF
+  for(u in 1:length(GOresults))
+  {
+    if("MF" %ni% names(GOresults[[u]])) {stop(paste("MF missing from GOresults number", u,sep=" "))}
+  }
+  #check to make sure each GOresults has annotation
+  for(y in 1:length(GOresults))
+  {
+    if("Term" %ni% names(GOstats::summary(GOresults[[y]]$MF))) {stop("Annotation Terms missing from GOresults: reload libraries annotate, GO.db, GSEABase and GOstats")}
+  }
+
+  key<- paste(unlist(grepList),collapse ="|")
+
+  GOtable<-GOstats::summary(GOresults[[1]]$MF)[grep(key,GOstats::summary(GOresults[[1]]$MF)[,7],perl=TRUE),1:2]
+  names(GOtable)[2]<-names(GOresults[1])
+
+  for(l in 2:length(GOresults))
+  {
+    GOtmp<-GOstats::summary(GOresults[[l]]$MF)[grep(key,GOstats::summary(GOresults[[l]]$MF)[,7],perl=TRUE),1:2]
+    names(GOtmp)[2]<-names(GOresults[l])
+    GOtable<-merge(GOtable,GOtmp,by.x="GOMFID",by.y="GOMFID",all=T)
+  }
+
+  #remove terms that occur less than minimum times
+  ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
+  GOtable<-GOtable[which(ind>minT),]
+
+  GOtable<-cbind(GOtable,AnnotationDbi::Term(GOtable$GOMFID))
+
+  #order the GO terms based on the order of grepList
+  o<-NULL
+  v<-NULL
+  for(G in 1:length(grepList))
+  {
+    oT<-grep(grepList[[G]],GOtable[,ncol(GOtable)])
+    o<-c(o,oT)
+    v<-c(v,length(oT))
+  }
+
+  #convert to -log10(pvalue)
+  GOtable[is.na(GOtable)] <- 1
+  end<-ncol(GOtable)-1
+  GOtable[,2:end]<- -log10(GOtable[,2:end])
+
+
+  results<-data.frame(t(GOtable[o,2:end]))
+  results<-results[order(as.numeric(row.names(results))),]
+  names(results)<-GOtable[o,1]
+
+  #output results order
+  if(!is.null(Rorder))
+  {
+    results<-results[Rorder,]
+  }
+
+
+  vlines<-cumsum(v)
+  #make list of group names
+  GOgroups<-rep(NA,ncol(results))
+  for(e in 1:length(grepList))
+  {
+    if(e==1)
+    {
+      GOgroups[round(v[e]/2)]<-names(grepList)[e]
+    } else {
+      GOgroups[round(v[e]/2)+vlines[e-1]]<-names(grepList)[e]
+    }
+  }
+
+  par(mar = c(9, 8, 2, 2));
+  WGCNA::labeledHeatmap(Matrix = results,
+                        xLabels = GOgroups,
+                        yLabels = row.names(results),
+                        yColorLabels = TRUE,
+                        yColorWidth = 0.05,
+                        ySymbols = row.names(results),
+                        colors = my_palette,
+                        #textMatrix = txt,
+                        setStdMargins = FALSE,
+                        cex.text = 0.5,
+                        cex.lab.y = 0.8,
+                        cex.lab.x = 1,
+                        xLabelsAngle = 90,
+                        zlim = zlim,
+                        main = main,
+                        verticalSeparator.x = vlines
+  )
+  #return(GOtable)
+  return(results)
+
+}
+
+#
+#'Parse GO results using grep and plot
+#'
+#'This function creates a summary plot of GO$CC results by parsing GO results using grep and a list of search terms
+#'
+#' @usage ParseGOCCnPlot(grepList,GOresults, minT=0, Rorder=NULL,
+#'              my_palette=colorRampPalette(c("white", "red"))(n = 8),
+#'              main = "GO Enrichment",
+#'              zlim = c(0,15) )
+#' @param grepList A list object where each value contains a group of search terms sperated by "|". The names and order values will be taken into account when plotting.
+#' @param GOresults A list containing multiple GO$CC objects from GOanalysis
+#' @param minT An integer specifying the minimum number of time a term must occur to be considered important. Default = 0
+#' @param Rorder Row order for how the results shoul dbe plotted
+#' @param mypalette Color palette used for heatmap
+#' @param main Title of the plot
+#' @param zlim Range specifying the p-values to be plotted
+#' @import annotate
+#' @import AnnotationDbi
+#' @import GO.db
+#' @import GSEABase
+#' @import GOstat
+#' @import WGCNA
+#' @importMethodsFrom GOstats summary
+#' @importMethodsFrom AnnotationDbi Term
+#' @return Returns summary figure and summary table of results used to generate figure
+#' @examples
+#' #generate some data
+#'      set1 <- sample(Ptrichocarpa_210_annotation_primary$ATG)[1:2000]
+#'      set2 <- sample(Ptrichocarpa_210_annotation_primary$ATG)[1:2000]
+#'
+#' #calculate GO enrichment for CC
+#'      GOresults<-list
+#'      GOresults$set1<-atGOanalysis(set1,ontology="CC)
+#'      GOresults$set2<-atGOanalysis(set2,ontology="CC)
+#'
+#' #create search list
+#'      grepList<-list()
+#'      grepList$hormone<-"hormone|gibberelli|brassino|auxin"
+#'      grepList$peroxisome <- "peroxi"
+#'      grepList$localization <-"protein localization"
+#'
+#' results<-ParseGOCCnPlot(grepList, GOresults)
+#'
+#' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
+#' @export
+ParseGOCCnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
+                         my_palette=colorRampPalette(c("white", "red"))(n = 8),
+                         main = "GO Enrichment",
+                         zlim = c(0,15) )
+{
+
+  #check to make sure each GOresults has CC
+  for(u in 1:length(GOresults))
+  {
+    if("CC" %ni% names(GOresults[[u]])) {stop(paste("CC missing from GOresults number", u,sep=" "))}
+  }
+  #check to make sure each GOresults has annotation
+  for(y in 1:length(GOresults))
+  {
+    if("Term" %ni% names(GOstats::summary(GOresults[[y]]$CC))) {stop("Annotation Terms missing from GOresults: reload libraries annotate, GO.db, GSEABase and GOstats")}
+  }
+
+  key<- paste(unlist(grepList),collapse ="|")
+
+  GOtable<-GOstats::summary(GOresults[[1]]$CC)[grep(key,GOstats::summary(GOresults[[1]]$CC)[,7],perl=TRUE),1:2]
+  names(GOtable)[2]<-names(GOresults[1])
+
+  for(l in 2:length(GOresults))
+  {
+    GOtmp<-GOstats::summary(GOresults[[l]]$CC)[grep(key,GOstats::summary(GOresults[[l]]$CC)[,7],perl=TRUE),1:2]
+    names(GOtmp)[2]<-names(GOresults[l])
+    GOtable<-merge(GOtable,GOtmp,by.x="GOCCID",by.y="GOCCID",all=T)
+  }
+
+  #remove terms that occur less than minimum times
+  ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
+  GOtable<-GOtable[which(ind>minT),]
+
+  GOtable<-cbind(GOtable,AnnotationDbi::Term(GOtable$GOCCID))
+
+  #order the GO terms based on the order of grepList
+  o<-NULL
+  v<-NULL
+  for(G in 1:length(grepList))
+  {
+    oT<-grep(grepList[[G]],GOtable[,ncol(GOtable)])
+    o<-c(o,oT)
+    v<-c(v,length(oT))
+  }
+
+  #convert to -log10(pvalue)
+  GOtable[is.na(GOtable)] <- 1
+  end<-ncol(GOtable)-1
+  GOtable[,2:end]<- -log10(GOtable[,2:end])
+
+
+  results<-data.frame(t(GOtable[o,2:end]))
+  results<-results[order(as.numeric(row.names(results))),]
+  names(results)<-GOtable[o,1]
+
+  #output results order
+  if(!is.null(Rorder))
+  {
+    results<-results[Rorder,]
+  }
+
+
+  vlines<-cumsum(v)
+  #make list of group names
+  GOgroups<-rep(NA,ncol(results))
+  for(e in 1:length(grepList))
+  {
+    if(e==1)
+    {
+      GOgroups[round(v[e]/2)]<-names(grepList)[e]
+    } else {
+      GOgroups[round(v[e]/2)+vlines[e-1]]<-names(grepList)[e]
+    }
+  }
+
+  par(mar = c(9, 8, 2, 2));
+  WGCNA::labeledHeatmap(Matrix = results,
+                        xLabels = GOgroups,
+                        yLabels = row.names(results),
+                        yColorLabels = TRUE,
+                        yColorWidth = 0.05,
+                        ySymbols = row.names(results),
+                        colors = my_palette,
+                        #textMatrix = txt,
+                        setStdMargins = FALSE,
+                        cex.text = 0.5,
+                        cex.lab.y = 0.8,
+                        cex.lab.x = 1,
+                        xLabelsAngle = 90,
+                        zlim = zlim,
+                        main = main,
+                        verticalSeparator.x = vlines
+  )
+  #return(GOtable)
+  return(results)
+
+}
