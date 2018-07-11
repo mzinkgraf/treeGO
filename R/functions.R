@@ -5,13 +5,15 @@
 #'
 #' @usage GOanalysis(genes, universe = pt210_GO_universe,
 #'                organism = "Populus trichocarpa", pv = 0.01,
-#'                ontology=c("BP","MF","CC"), testDirection = "over")
+#'                ontology=c("BP","MF","CC"), testDirection = "over",
+#'                conditional=FALSE)
 #' @param genes Provide a vector of gene names to be tested
 #' @param universe Provide a user define GO universe
 #' @param organism Specify the name of the organism
 #' @param pv Specify a p-value threshhold for significance (default = 0.01)
 #' @param ontology Specify the ontologies to test (Default = c("BP","MF","CC"))
 #' @param testDirection A string which can be either "over" or "under". This determines whether the test performed detects over or under represented GO terms. See \link[Category]{GSEAGOHyperGParams} (Defalut = "over")
+#' @param conditional A logical indicating whether the calculation should condition on the GO structure. (GO only)
 #' @import annotate
 #' @import GO.db
 #' @import GSEABase
@@ -25,7 +27,7 @@
 #' @return Returns a list object that contains the ontology results for Biological Processes (BP), Molecular Functions (MF) and Cellular Components (CC)
 #' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
 #' @export
-GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus trichocarpa", pv=0.01, ontology=c("BP","MF","CC"), testDirection = "over")
+GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus trichocarpa", pv=0.01, ontology=c("BP","MF","CC"), testDirection = "over", conditional=FALSE)
 {
 
   goFrame<-GOFrame(universe,organism=organism)
@@ -46,7 +48,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   universeGeneIds = uni,
                                   ontology = "MF",
                                   pvalueCutoff = pv,
-                                  conditional = FALSE,
+                                  conditional = conditional,
                                   testDirection = testDirection)
 
   Over_MF <- hyperGTest(params_MF)
@@ -61,7 +63,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   universeGeneIds = uni,
                                   ontology = "BP",
                                   pvalueCutoff = pv,
-                                  conditional = FALSE,
+                                  conditional = conditional,
                                   testDirection = testDirection)
 
   Over_BP <- hyperGTest(params_BP)
@@ -76,7 +78,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   universeGeneIds = uni,
                                   ontology = "CC",
                                   pvalueCutoff = pv,
-                                  conditional = FALSE,
+                                  conditional = conditional,
                                   testDirection = testDirection)
 
   Over_CC <- hyperGTest(params_CC)

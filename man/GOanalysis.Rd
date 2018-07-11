@@ -6,7 +6,8 @@
 \usage{
 GOanalysis(genes, universe = pt210_GO_universe,
                organism = "Populus trichocarpa", pv = 0.01,
-               ontology=c("BP","MF","CC"), testDirection = "over")
+               ontology=c("BP","MF","CC"), testDirection = "over",
+               conditional=FALSE)
 }
 \arguments{
 \item{genes}{Provide a vector of gene names to be tested}
@@ -20,6 +21,8 @@ GOanalysis(genes, universe = pt210_GO_universe,
 \item{ontology}{Specify the ontologies to test (Default = c("BP","MF","CC"))}
 
 \item{testDirection}{A string which can be either "over" or "under". This determines whether the test performed detects over or under represented GO terms. See \link[Category]{GSEAGOHyperGParams} (Defalut = "over")}
+
+\item{conditional}{A logical indicating whether the calculation should condition on the GO structure. (GO only)}
 }
 \value{
 Returns a list object that contains the ontology results for Biological Processes (BP), Molecular Functions (MF) and Cellular Components (CC)
