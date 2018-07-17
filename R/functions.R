@@ -23,7 +23,7 @@
 #' @importMethodsFrom GSEABase GeneSetCollection
 #' @importMethodsFrom GSEABase GOCollection
 #' @importMethodsFrom Category GSEAGOHyperGParams
-#' @importMethodsFrom GOstat hyperGTest
+#' @importMethodsFrom GOstats hyperGTest
 #' @return Returns a list object that contains the ontology results for Biological Processes (BP), Molecular Functions (MF) and Cellular Components (CC)
 #' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
 #' @export
@@ -112,7 +112,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
 #' @importMethodsFrom GSEABase GeneSetCollection
 #' @importMethodsFrom GSEABase GOCollection
 #' @importMethodsFrom Category GSEAGOHyperGParams
-#' @importMethodsFrom GOstat hyperGTest
+#' @importMethodsFrom GOstats hyperGTest
 #' @return Returns a list object that contains the ontology results for Biological Processes (BP), Molecular Functions (MF) and Cellular Components (CC)
 #' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
 #' @export
@@ -300,7 +300,7 @@ removeTERM<-function(GOid, GO_object)
 #' @import AnnotationDbi
 #' @import GO.db
 #' @import GSEABase
-#' @import GOstat
+#' @import GOstats
 #' @import WGCNA
 #' @importMethodsFrom GOstats summary
 #' @importMethodsFrom AnnotationDbi Term
@@ -443,7 +443,7 @@ ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
 #' @import AnnotationDbi
 #' @import GO.db
 #' @import GSEABase
-#' @import GOstat
+#' @import GOstats
 #' @import WGCNA
 #' @importMethodsFrom GOstats summary
 #' @importMethodsFrom AnnotationDbi Term
@@ -586,7 +586,7 @@ ParseGOMFnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
 #' @import AnnotationDbi
 #' @import GO.db
 #' @import GSEABase
-#' @import GOstat
+#' @import GOstats
 #' @import WGCNA
 #' @importMethodsFrom GOstats summary
 #' @importMethodsFrom AnnotationDbi Term
