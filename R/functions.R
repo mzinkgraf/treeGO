@@ -1,5 +1,5 @@
 
-#'
+#load(list.files(path="data/", pattern = "rda", include.dirs = TRUE))
 
 
 #'GO enrichment analysis
@@ -29,7 +29,6 @@
 # @importMethodsFrom GSEABase GOCollection
 # @importMethodsFrom Category GSEAGOHyperGParams
 #' @importMethodsFrom GOstats hyperGTest
-#' @importMethodsFrom GOstats makeGOGraph
 #' @return Returns a list object that contains the ontology results for Biological Processes (BP), Molecular Functions (MF) and Cellular Components (CC)
 #' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
 #' @export
@@ -120,7 +119,6 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
 #' @importMethodsFrom GSEABase GeneSetCollection
 # @importMethodsFrom GSEABase GOCollection
 # @importMethodsFrom Category GSEAGOHyperGParams
-#' @importMethodsFrom GOstats makeGOGraph
 #' @importMethodsFrom GOstats hyperGTest
 #' @return Returns a list object that contains the ontology results for Biological Processes (BP), Molecular Functions (MF) and Cellular Components (CC)
 #' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
