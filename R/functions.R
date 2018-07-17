@@ -15,6 +15,8 @@
 #' @param testDirection A string which can be either "over" or "under". This determines whether the test performed detects over or under represented GO terms. See \link[Category]{GSEAGOHyperGParams} (Defalut = "over")
 #' @param conditional A logical indicating whether the calculation should condition on the GO structure. (GO only)
 #' @import annotate
+#' @import AnnotationDbi
+#' @import Category
 #' @import GO.db
 #' @import GSEABase
 #' @import GOstats
@@ -30,8 +32,8 @@
 GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus trichocarpa", pv=0.01, ontology=c("BP","MF","CC"), testDirection = "over", conditional=FALSE)
 {
 
-  goFrame<-GOFrame(universe,organism=organism)
-  goAllFrame<-GOAllFrame(goFrame)
+  goFrame<-AnnotationDbi::GOFrame(universe,organism=organism)
+  goAllFrame<-AnnotationDbi::GOAllFrame(goFrame)
 
 
   gsc <- GSEABase::GeneSetCollection(goAllFrame, setType = GSEABase::GOCollection())
@@ -42,7 +44,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
   output<-list()
   if("MF" %in% ontology)
   {
-  params_MF <- GSEAGOHyperGParams(name="Annotation Params MF",
+  params_MF <- Category::GSEAGOHyperGParams(name="Annotation Params MF",
                                   geneSetCollection=gsc,
                                   geneIds =g_id,
                                   universeGeneIds = uni,
@@ -51,13 +53,13 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   conditional = conditional,
                                   testDirection = testDirection)
 
-  Over_MF <- hyperGTest(params_MF)
+  Over_MF <- GOstats::hyperGTest(params_MF)
   output$MF = Over_MF
   }
 
   if("BP" %in% ontology)
   {
-  params_BP <- GSEAGOHyperGParams(name="Annotation Params BP",
+  params_BP <- Category::GSEAGOHyperGParams(name="Annotation Params BP",
                                   geneSetCollection=gsc,
                                   geneIds =g_id,
                                   universeGeneIds = uni,
@@ -66,13 +68,13 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   conditional = conditional,
                                   testDirection = testDirection)
 
-  Over_BP <- hyperGTest(params_BP)
+  Over_BP <- GOstats::hyperGTest(params_BP)
   output$BP = Over_BP
   }
 
   if("CC" %in% ontology)
   {
-  params_CC <- GSEAGOHyperGParams(name="Annotation Params CC",
+  params_CC <- Category::GSEAGOHyperGParams(name="Annotation Params CC",
                                   geneSetCollection=gsc,
                                   geneIds =g_id,
                                   universeGeneIds = uni,
@@ -81,7 +83,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
                                   conditional = conditional,
                                   testDirection = testDirection)
 
-  Over_CC <- hyperGTest(params_CC)
+  Over_CC <- GOstats::hyperGTest(params_CC)
   output$CC = Over_CC
   }
 
@@ -104,6 +106,8 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
 #' @param ontology Specify the ontologies to test (Default = c("BP","MF","CC"))
 #' @param testDirection A string which can be either "over" or "under". This determines whether the test performed detects over or under represented GO terms. See \link[Category]{GSEAGOHyperGParams} (Defalut = "over")
 #' @import annotate
+#' @import AnnotationDbi
+#' @import Category
 #' @import GO.db
 #' @import GSEABase
 #' @import GOstats
@@ -123,10 +127,10 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
   genes1<-sub("(AT\\d+G\\d+)\\.\\d+","\\1",genes,perl=TRUE)
 
 
-  goFrame<-GOFrame(universe,organism=organism)
-  goAllFrame<-GOAllFrame(goFrame)
+  goFrame<-AnnotationDbi::GOFrame(universe,organism=organism)
+  goAllFrame<-AnnotationDbi::GOAllFrame(goFrame)
 
-  gsc <- GeneSetCollection(goAllFrame, setType = GOCollection())
+  gsc <- GSEABase::GeneSetCollection(goAllFrame, setType = GOCollection())
 
   uni<-as.character(unique(universe$frame.gene_id))
   universe$frame.gene_id <- as.character(universe$frame.gene_id)
@@ -135,7 +139,7 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
   output<-list()
   if("MF" %in% ontology)
   {
-    params_MF <- GSEAGOHyperGParams(name="Annotation Params MF",
+    params_MF <- Category::GSEAGOHyperGParams(name="Annotation Params MF",
                                     geneSetCollection=gsc,
                                     geneIds =g_id,
                                     universeGeneIds = uni,
@@ -144,13 +148,13 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
                                     conditional = FALSE,
                                     testDirection = testDirection)
 
-    Over_MF <- hyperGTest(params_MF)
+    Over_MF <- GOstats::hyperGTest(params_MF)
     output$MF = Over_MF
   }
 
   if("BP" %in% ontology)
   {
-    params_BP <- GSEAGOHyperGParams(name="Annotation Params BP",
+    params_BP <- Category::GSEAGOHyperGParams(name="Annotation Params BP",
                                     geneSetCollection=gsc,
                                     geneIds =g_id,
                                     universeGeneIds = uni,
@@ -159,13 +163,13 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
                                     conditional = FALSE,
                                     testDirection = testDirection)
 
-    Over_BP <- hyperGTest(params_BP)
+    Over_BP <- GOstats::hyperGTest(params_BP)
     output$BP = Over_BP
   }
 
   if("CC" %in% ontology)
   {
-    params_CC <- GSEAGOHyperGParams(name="Annotation Params CC",
+    params_CC <- Category::GSEAGOHyperGParams(name="Annotation Params CC",
                                     geneSetCollection=gsc,
                                     geneIds =g_id,
                                     universeGeneIds = uni,
@@ -174,7 +178,7 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
                                     conditional = FALSE,
                                     testDirection = testDirection)
 
-    Over_CC <- hyperGTest(params_CC)
+    Over_CC <- GOstats::hyperGTest(params_CC)
     output$CC = Over_CC
   }
 
