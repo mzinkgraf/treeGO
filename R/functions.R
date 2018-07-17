@@ -1,7 +1,4 @@
 
-#load(list.files(path="data/", pattern = "rda", include.dirs = TRUE))
-
-
 #'GO enrichment analysis
 #'
 #'This function does GO enrichment on a user defined GO universe
