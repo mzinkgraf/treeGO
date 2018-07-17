@@ -4,7 +4,7 @@
 \alias{atGOanalysis}
 \title{GO enrichment analysis using Arabidopsis TAIR10}
 \usage{
-atGOanalysis(genes, universe = TAIR10_GO_universe,
+atGOanalysis(genes, universe = TAIR10_GO_Universe,
                organism = "Arabidopsis thaliana", pv = 0.01,
                ontology=c("BP","MF","CC"), testDirection = "over")
 }

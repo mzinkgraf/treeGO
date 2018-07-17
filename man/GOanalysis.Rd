@@ -4,7 +4,7 @@
 \alias{GOanalysis}
 \title{GO enrichment analysis}
 \usage{
-GOanalysis(genes, universe = pt210_GO_universe,
+GOanalysis(genes, universe = pt210_GO_Universe,
                organism = "Populus trichocarpa", pv = 0.01,
                ontology=c("BP","MF","CC"), testDirection = "over",
                conditional=FALSE)

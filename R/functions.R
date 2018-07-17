@@ -6,7 +6,7 @@
 #'
 #'This function does GO enrichment on a user defined GO universe
 #'
-#' @usage GOanalysis(genes, universe = pt210_GO_universe,
+#' @usage GOanalysis(genes, universe = pt210_GO_Universe,
 #'                organism = "Populus trichocarpa", pv = 0.01,
 #'                ontology=c("BP","MF","CC"), testDirection = "over",
 #'                conditional=FALSE)
@@ -99,7 +99,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
 #'
 #'This function does GO enrichment on TAIR10 GO universe
 #'
-#' @usage atGOanalysis(genes, universe = TAIR10_GO_universe,
+#' @usage atGOanalysis(genes, universe = TAIR10_GO_Universe,
 #'                organism = "Arabidopsis thaliana", pv = 0.01,
 #'                ontology=c("BP","MF","CC"), testDirection = "over")
 #' @param genes Provide a vector of gene names to be tested
