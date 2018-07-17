@@ -1,4 +1,7 @@
 
+#'
+
+
 #'GO enrichment analysis
 #'
 #'This function does GO enrichment on a user defined GO universe
@@ -23,8 +26,8 @@
 #' @importMethodsFrom AnnotationDbi GOFrame
 #' @importMethodsFrom AnnotationDbi GOAllFrame
 #' @importMethodsFrom GSEABase GeneSetCollection
-#' @importMethodsFrom GSEABase GOCollection
-#' @importMethodsFrom Category GSEAGOHyperGParams
+# @importMethodsFrom GSEABase GOCollection
+# @importMethodsFrom Category GSEAGOHyperGParams
 #' @importMethodsFrom GOstats hyperGTest
 #' @return Returns a list object that contains the ontology results for Biological Processes (BP), Molecular Functions (MF) and Cellular Components (CC)
 #' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
@@ -36,7 +39,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
   goAllFrame<-AnnotationDbi::GOAllFrame(goFrame)
 
 
-  gsc <- GSEABase::GeneSetCollection(goAllFrame, setType = GSEABase::GOCollection())
+  gsc <- GSEABase::GeneSetCollection(goAllFrame, setType = GOCollection())
   uni<-as.character(unique(universe$frame.gene_id))
   universe$frame.gene_id <- as.character(universe$frame.gene_id)
   g_id<-as.character(intersect(universe$frame.gene_id,genes))
@@ -44,7 +47,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
   output<-list()
   if("MF" %in% ontology)
   {
-  params_MF <- Category::GSEAGOHyperGParams(name="Annotation Params MF",
+  params_MF <- GSEAGOHyperGParams(name="Annotation Params MF",
                                   geneSetCollection=gsc,
                                   geneIds =g_id,
                                   universeGeneIds = uni,
@@ -59,7 +62,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
 
   if("BP" %in% ontology)
   {
-  params_BP <- Category::GSEAGOHyperGParams(name="Annotation Params BP",
+  params_BP <- GSEAGOHyperGParams(name="Annotation Params BP",
                                   geneSetCollection=gsc,
                                   geneIds =g_id,
                                   universeGeneIds = uni,
@@ -74,7 +77,7 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
 
   if("CC" %in% ontology)
   {
-  params_CC <- Category::GSEAGOHyperGParams(name="Annotation Params CC",
+  params_CC <- GSEAGOHyperGParams(name="Annotation Params CC",
                                   geneSetCollection=gsc,
                                   geneIds =g_id,
                                   universeGeneIds = uni,
@@ -114,8 +117,8 @@ GOanalysis<-function (genes, universe = pt210_GO_Universe, organism = "Populus t
 #' @importMethodsFrom AnnotationDbi GOFrame
 #' @importMethodsFrom AnnotationDbi GOAllFrame
 #' @importMethodsFrom GSEABase GeneSetCollection
-#' @importMethodsFrom GSEABase GOCollection
-#' @importMethodsFrom Category GSEAGOHyperGParams
+# @importMethodsFrom GSEABase GOCollection
+# @importMethodsFrom Category GSEAGOHyperGParams
 #' @importMethodsFrom GOstats hyperGTest
 #' @return Returns a list object that contains the ontology results for Biological Processes (BP), Molecular Functions (MF) and Cellular Components (CC)
 #' @author Matthew Zinkgraf, \email{mzinkgraf@gmail.com}
@@ -139,7 +142,7 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
   output<-list()
   if("MF" %in% ontology)
   {
-    params_MF <- Category::GSEAGOHyperGParams(name="Annotation Params MF",
+    params_MF <- GSEAGOHyperGParams(name="Annotation Params MF",
                                     geneSetCollection=gsc,
                                     geneIds =g_id,
                                     universeGeneIds = uni,
@@ -154,7 +157,7 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
 
   if("BP" %in% ontology)
   {
-    params_BP <- Category::GSEAGOHyperGParams(name="Annotation Params BP",
+    params_BP <- GSEAGOHyperGParams(name="Annotation Params BP",
                                     geneSetCollection=gsc,
                                     geneIds =g_id,
                                     universeGeneIds = uni,
@@ -169,7 +172,7 @@ atGOanalysis<-function (genes, universe = TAIR10_GO_Universe, organism = "Arabid
 
   if("CC" %in% ontology)
   {
-    params_CC <- Category::GSEAGOHyperGParams(name="Annotation Params CC",
+    params_CC <- GSEAGOHyperGParams(name="Annotation Params CC",
                                     geneSetCollection=gsc,
                                     geneIds =g_id,
                                     universeGeneIds = uni,
