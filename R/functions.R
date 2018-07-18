@@ -359,7 +359,8 @@ ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
   }
 
   #remove terms that occur less than minimum times
-  ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
+  #ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
+  ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(which(y!=0 & !is.na(y))) })
   GOtable<-GOtable[which(ind>minT),]
 
   GOtable<-cbind(GOtable,AnnotationDbi::Term(GOtable$GOBPID))
@@ -502,7 +503,8 @@ ParseGOMFnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
   }
 
   #remove terms that occur less than minimum times
-  ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
+  #ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
+  ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(which(y!=0 & !is.na(y))) })
   GOtable<-GOtable[which(ind>minT),]
 
   GOtable<-cbind(GOtable,AnnotationDbi::Term(GOtable$GOMFID))
@@ -645,7 +647,8 @@ ParseGOCCnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
   }
 
   #remove terms that occur less than minimum times
-  ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
+  #ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
+  ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(which(y!=0 & !is.na(y))) })
   GOtable<-GOtable[which(ind>minT),]
 
   GOtable<-cbind(GOtable,AnnotationDbi::Term(GOtable$GOCCID))
