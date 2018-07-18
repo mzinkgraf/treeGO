@@ -346,6 +346,8 @@ ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
   if("Term" %ni% names(GOstats::summary(GOresults[[y]]$BP))) {stop("Annotation Terms missing from GOresults: reload libraries annotate, GO.db, GSEABase and GOstats")}
   }
 
+  if(!is.null(Rorder)) GOresults<-GOresults[reorder]
+
   key<- paste(unlist(grepList),collapse ="|")
 
   GOtable<-GOstats::summary(GOresults[[1]]$BP)[grep(key,GOstats::summary(GOresults[[1]]$BP)[,7],perl=TRUE),1:2]
@@ -360,8 +362,8 @@ ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
 
   #remove terms that occur less than minimum times
   #ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
-  ind<-apply(GOtable,1,function(x) { y<-as.numeric(as.character(x[-1])); length(which(y!=0 & !is.na(y))) })
-  GOtable<-GOtable[c(1,which(ind>minT)+1),]
+  ind<-apply(GOtable,1,function(x) { y<-as.numeric(as.character(x[-1])); length(which(!is.na(y))) })
+  GOtable<-GOtable[which(ind>minT),]
 
   GOtable<-cbind(GOtable,AnnotationDbi::Term(GOtable$GOBPID))
 
@@ -490,6 +492,8 @@ ParseGOMFnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
     if("Term" %ni% names(GOstats::summary(GOresults[[y]]$MF))) {stop("Annotation Terms missing from GOresults: reload libraries annotate, GO.db, GSEABase and GOstats")}
   }
 
+  if(!is.null(Rorder)) GOresults<-GOresults[reorder]
+
   key<- paste(unlist(grepList),collapse ="|")
 
   GOtable<-GOstats::summary(GOresults[[1]]$MF)[grep(key,GOstats::summary(GOresults[[1]]$MF)[,7],perl=TRUE),1:2]
@@ -504,8 +508,8 @@ ParseGOMFnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
 
   #remove terms that occur less than minimum times
   #ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
-  ind<-apply(GOtable,1,function(x) { y<-as.numeric(as.character(x[-1])); length(which(y!=0 & !is.na(y))) })
-  GOtable<-GOtable[c(1,which(ind>minT)+1),]
+  ind<-apply(GOtable,1,function(x) { y<-as.numeric(as.character(x[-1])); length(which(!is.na(y))) })
+  GOtable<-GOtable[which(ind>minT),]
 
   GOtable<-cbind(GOtable,AnnotationDbi::Term(GOtable$GOMFID))
 
@@ -634,6 +638,8 @@ ParseGOCCnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
     if("Term" %ni% names(GOstats::summary(GOresults[[y]]$CC))) {stop("Annotation Terms missing from GOresults: reload libraries annotate, GO.db, GSEABase and GOstats")}
   }
 
+  if(!is.null(Rorder)) GOresults<-GOresults[reorder]
+
   key<- paste(unlist(grepList),collapse ="|")
 
   GOtable<-GOstats::summary(GOresults[[1]]$CC)[grep(key,GOstats::summary(GOresults[[1]]$CC)[,7],perl=TRUE),1:2]
@@ -648,8 +654,8 @@ ParseGOCCnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
 
   #remove terms that occur less than minimum times
   #ind<-apply(GOtable,1,function(x) { y<-x[-1]; length(y[!is.na(y)]) })
-  ind<-apply(GOtable,1,function(x) { y<-as.numeric(as.character(x[-1])); length(which(y!=0 & !is.na(y))) })
-  GOtable<-GOtable[c(1,which(ind>minT)+1),]
+  ind<-apply(GOtable,1,function(x) { y<-as.numeric(as.character(x[-1])); length(which(!is.na(y))) })
+  GOtable<-GOtable[which(ind>minT),]
 
   GOtable<-cbind(GOtable,AnnotationDbi::Term(GOtable$GOCCID))
 
