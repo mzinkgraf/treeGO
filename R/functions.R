@@ -346,7 +346,7 @@ ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
   if("Term" %ni% names(GOstats::summary(GOresults[[y]]$BP))) {stop("Annotation Terms missing from GOresults: reload libraries annotate, GO.db, GSEABase and GOstats")}
   }
 
-  if(!is.null(Rorder)) GOresults<-GOresults[reorder]
+  if(!is.null(Rorder)) GOresults<-GOresults[Rorder]
 
   key<- paste(unlist(grepList),collapse ="|")
 
@@ -492,7 +492,7 @@ ParseGOMFnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
     if("Term" %ni% names(GOstats::summary(GOresults[[y]]$MF))) {stop("Annotation Terms missing from GOresults: reload libraries annotate, GO.db, GSEABase and GOstats")}
   }
 
-  if(!is.null(Rorder)) GOresults<-GOresults[reorder]
+  if(!is.null(Rorder)) GOresults<-GOresults[Rorder]
 
   key<- paste(unlist(grepList),collapse ="|")
 
@@ -638,7 +638,7 @@ ParseGOCCnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
     if("Term" %ni% names(GOstats::summary(GOresults[[y]]$CC))) {stop("Annotation Terms missing from GOresults: reload libraries annotate, GO.db, GSEABase and GOstats")}
   }
 
-  if(!is.null(Rorder)) GOresults<-GOresults[reorder]
+  if(!is.null(Rorder)) GOresults<-GOresults[Rorder]
 
   key<- paste(unlist(grepList),collapse ="|")
 
