@@ -292,7 +292,7 @@ removeTERM<-function(GOid, GO_object)
 #' @usage ParseGOBPnPlot(grepList,GOresults, minT=0, Rorder=NULL,
 #'              my_palette=colorRampPalette(c("white", "red"))(n = 8),
 #'              main = "GO Enrichment",
-#'              zlim = c(0,15), hline=NULL )
+#'              zlim = c(0,15), hlines=NULL )
 #' @param grepList A list object where each value contains a group of search terms sperated by "|". The names and order values will be taken into account when plotting.
 #' @param GOresults A list containing multiple GO$BP objects from GOanalysis
 #' @param minT An integer specifying the minimum number of time a term must occur to be considered important. Default = 0
@@ -300,7 +300,7 @@ removeTERM<-function(GOid, GO_object)
 #' @param mypalette Color palette used for heatmap
 #' @param main Title of the plot
 #' @param zlim Range specifying the p-values to be plotted
-#' @param hline A `cumSum` vector designating breaks for grouping modules
+#' @param hlines A `cumsum()` vector designating breaks for grouping modules
 #' @import annotate
 #' @import AnnotationDbi
 #' @import GO.db
@@ -333,7 +333,7 @@ removeTERM<-function(GOid, GO_object)
 ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
                          my_palette=colorRampPalette(c("white", "red"))(n = 8),
                          main = "GO Enrichment",
-                         zlim = c(0,15), hline=NULL )
+                         zlim = c(0,15), hlines=NULL )
 {
 
   #check to make sure each GOresults has BP
@@ -424,7 +424,8 @@ ParseGOBPnPlot<-function(grepList,GOresults, minT=0, Rorder=NULL,
                  xLabelsAngle = 90,
                  zlim = zlim,
                  main = main,
-                 verticalSeparator.x = vlines
+                 verticalSeparator.x = vlines,
+                 horizontalSeparator.y = hlines
   )
   #return(GOtable)
   return(results)
