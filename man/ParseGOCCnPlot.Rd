@@ -7,7 +7,7 @@
 ParseGOCCnPlot(grepList,GOresults, minT=0, Rorder=NULL,
              my_palette=colorRampPalette(c("white", "red"))(n = 8),
              main = "GO Enrichment",
-             zlim = c(0,15) )
+             zlim = c(0,15), hlines=NULL )
 }
 \arguments{
 \item{grepList}{A list object where each value contains a group of search terms sperated by "|". The names and order values will be taken into account when plotting.}
@@ -21,6 +21,8 @@ ParseGOCCnPlot(grepList,GOresults, minT=0, Rorder=NULL,
 \item{main}{Title of the plot}
 
 \item{zlim}{Range specifying the p-values to be plotted}
+
+\item{hlines}{A "cumsum()" vector designating breaks for grouping modules}
 
 \item{mypalette}{Color palette used for heatmap}
 }

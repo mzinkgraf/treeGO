@@ -22,7 +22,7 @@ ParseGOBPnPlot(grepList,GOresults, minT=0, Rorder=NULL,
 
 \item{zlim}{Range specifying the p-values to be plotted}
 
-\item{hlines}{A `cumsum()` vector designating breaks for grouping modules}
+\item{hlines}{A "cumsum()" vector designating breaks for grouping modules}
 
 \item{mypalette}{Color palette used for heatmap}
 }
